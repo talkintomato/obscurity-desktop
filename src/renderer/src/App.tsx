@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 
-function App(): JSX.Element {
+function App() {
   return (
     <div className="h-screen w-full flex items-center justify-center">
       <AlertDialog>

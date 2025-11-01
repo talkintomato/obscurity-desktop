@@ -1,216 +1,138 @@
-# shadcn-electron-app
+# Obscurity Desktop
 
-## Installation
+An Electron desktop application built with React 19, TypeScript, Tailwind CSS v4, and shadcn/ui components.
 
-### 1. Create project
+## Tech Stack
+
+- **Electron**: 39.0.0
+- **React**: 19.2.0
+- **TypeScript**: 5.9.3
+- **Tailwind CSS**: 4.1.16
+- **Vite**: 7.1.12
+- **shadcn/ui**: Component library
+- **ESLint**: 9.39.0
+
+## Prerequisites
+
+- Node.js (v18 or higher recommended)
+- pnpm (v10 or higher)
+
+## Getting Started
+
+### 1. Clone the repository
 
 ```bash
-$ pnpm create @quick-start/electron
+git clone <repository-url>
+cd obscurity-desktop
 ```
 
 ### 2. Install dependencies
 
-```bash
-$ pnpm add tailwindcss-animate class-variance-authority clsx tailwind-merge lucide-react
-```
-
-### 3. Install Tailwind CSS
+**Important**: Electron requires build scripts to run during installation to download the Electron binary.
 
 ```bash
-$ pnpm add -D tailwindcss postcss autoprefixer
-
-$ pnpm dlx tailwindcss init -p
+pnpm install --ignore-scripts=false
 ```
 
-### 4. Update `tailwind.config.js`
+**Alternative**: If you see a prompt about approving build scripts:
 
-```js
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ['./src/renderer/src/**/*.{js,ts,jsx,tsx}'],
-  theme: {
-    container: {
-      center: true,
-      padding: '2rem',
-      screens: {
-        '2xl': '1400px'
-      }
-    },
-    extend: {
-      colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))'
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))'
-        },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))'
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))'
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))'
-        },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))'
-        },
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))'
-        }
-      },
-      borderRadius: {
-        lg: `var(--radius)`,
-        md: `calc(var(--radius) - 2px)`,
-        sm: 'calc(var(--radius) - 4px)'
-      },
-      keyframes: {
-        'accordion-down': {
-          from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' }
-        },
-        'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' }
-        }
-      },
-      animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out'
-      }
-    }
-  },
-  plugins: [require('tailwindcss-animate')]
-}
+```bash
+pnpm install
+pnpm approve-builds  # Select 'electron' and 'esbuild'
 ```
 
-### 5. Update `tsconfig.json`
+### 3. Start development server
 
-```json
-{
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/renderer/src/*"]
-    }
-  }
-}
+```bash
+pnpm dev
 ```
 
-### 6. Update `tsconfig.web.json`
+This will:
+- Build the main process and preload scripts
+- Start the Vite dev server for the renderer process
+- Launch the Electron app with hot-reload enabled
 
-```json
-{
-  "compilerOptions": {
-    "composite": true,
-    "jsx": "react-jsx",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/renderer/src/*"],
-      "@renderer/*": ["src/renderer/src/*"]
-    }
-  }
-}
+## Available Scripts
+
+### Development
+
+```bash
+pnpm dev          # Start development server
+pnpm start        # Preview production build
 ```
 
-### 7. Create `components.json`
+### Building
 
-```json
-{
-  "style": "new-york",
-  "tailwind": {
-    "config": "tailwind.config.js",
-    "css": "src/renderer/src/assets/base.css",
-    "baseColor": "zinc",
-    "cssVariables": true,
-    "prefix": ""
-  },
-  "rsc": false,
-  "aliases": {
-    "utils": "@/lib/utils",
-    "components": "@/components",
-    "lib": "@/lib",
-    "hooks": "@/lib/hooks",
-    "ui": "@/components/ui"
-  },
-  "iconLibrary": "lucide"
-}
+```bash
+pnpm build              # Build for production
+pnpm build:mac          # Build for macOS
+pnpm build:win          # Build for Windows
+pnpm build:linux        # Build for Linux
+pnpm build:unpack       # Build without packaging
 ```
 
-### 8. Update `src/renderer/src/assets/base.css`
+### Code Quality
 
-```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 47.4% 11.2%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 47.4% 11.2%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 100% 50%;
-    --destructive-foreground: 210 40% 98%;
-    --ring: 215 20.2% 65.1%;
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
-    --muted: 223 47% 11%;
-    --muted-foreground: 215.4 16.3% 56.9%;
-    --accent: 216 34% 17%;
-    --accent-foreground: 210 40% 98%;
-    --popover: 224 71% 4%;
-    --popover-foreground: 215 20.2% 65.1%;
-    --border: 216 34% 17%;
-    --input: 216 34% 17%;
-    --card: 224 71% 4%;
-    --card-foreground: 213 31% 91%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 1.2%;
-    --secondary: 222.2 47.4% 11.2%;
-    --secondary-foreground: 210 40% 98%;
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
-    --ring: 216 34% 17%;
-    --radius: 0.5rem;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply font-sans antialiased bg-background text-foreground;
-  }
-}
+```bash
+pnpm typecheck          # Run TypeScript type checking
+pnpm lint               # Run ESLint (with auto-fix)
+pnpm format             # Format code with Prettier
 ```
+
+## Project Structure
+
+```
+obscurity-desktop/
+├── src/
+│   ├── main/           # Electron main process
+│   ├── preload/        # Preload scripts
+│   └── renderer/       # React renderer process
+│       ├── src/
+│       │   ├── assets/       # CSS and static assets
+│       │   ├── components/   # React components
+│       │   │   └── ui/      # shadcn/ui components
+│       │   └── lib/         # Utilities
+│       └── index.html
+├── resources/          # App icons and resources
+├── build/             # Build configuration
+└── out/               # Build output (generated)
+```
+
+## Tailwind CSS v4
+
+This project uses Tailwind CSS v4 with the new CSS-first configuration:
+
+- Theme configuration is defined in `src/renderer/src/assets/base.css` using the `@theme` directive
+- No `tailwind.config.js` file needed
+- Uses `@tailwindcss/postcss` plugin
+
+## ESLint v9
+
+This project uses ESLint v9 with the new flat config format:
+
+- Configuration in `eslint.config.js`
+- Uses `@electron-toolkit/eslint-config-ts` for Electron-specific rules
+- Integrated with Prettier via `eslint-plugin-prettier`
+
+## Troubleshooting
+
+### Electron binary not found
+
+If you get errors about Electron not being installed:
+
+```bash
+# Manually run the Electron install script
+node node_modules/.pnpm/electron@*/node_modules/electron/install.js
+```
+
+### Build script warnings
+
+If pnpm warns about ignored build scripts, make sure to run:
+
+```bash
+pnpm install --ignore-scripts=false
+```
+
+## License
+
+MIT
